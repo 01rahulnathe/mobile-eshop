@@ -14,17 +14,17 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', [ProductController::class, 'index']);
 Route::get('/home', [ProductController::class, 'index']);
 Route::get('cart', [ProductController::class, 'cart'])->name('cart');
 Route::get('add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('add.to.cart');
 Route::patch('update-cart', [ProductController::class, 'update'])->name('update.cart');
 Route::delete('remove-from-cart', [ProductController::class, 'remove'])->name('remove.from.cart');
+Route::get('/view_product/{id}', [ProductController::class, 'view_product'])->name('view_product');
 Route::post('place-from-cart', [ProductController::class, 'place_order'])->name('place.from.cart');
 Route::get('product-details', [ProductController::class, 'product_details'])->name('product.details');
 Route::get('/login', 'LoginController@show')->name('login.show');
 Route::post('/login', 'LoginController@login')->name('login.perform');
-
 
 
 ## admin routes

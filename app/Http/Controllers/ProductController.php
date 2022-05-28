@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Product_Order;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -33,14 +34,35 @@ class ProductController extends Controller
         }
     }
 
+    public function view_product($id)
+    {
+        $products = Product::where('id', $id)->first();
+        return view('product.view', compact('products'));
+    }
+
     public function view()
     {
+        if (isset(Auth::user()->user_type) && Auth::user()->user_type == "Administrator"){
+            //
+        }else if(isset(Auth::user()->user_type) && Auth::user()->user_type == "Guest"){
+            return redirect('/home');
+        }else{
+            return redirect('/login');
+        }
+
         $products = Product::all();
         return view('product.index', compact('products'));
     }
 
     public function orders()
     {
+        if (isset(Auth::user()->user_type) && Auth::user()->user_type == "Administrator"){
+            //
+        }else if(isset(Auth::user()->user_type) && Auth::user()->user_type == "Guest"){
+            return redirect('/home');
+        }else{
+            return redirect('/login');
+        }
         $orders = Order::all();
         return view('order.index', compact('orders'));
     }
@@ -222,11 +244,12 @@ class ProductController extends Controller
         //     unset($cart);
         // }
 
-        //$data = array('name'=>"Rahul Nathe");
-        //Mail::send(['text'=>'mail'], $data, function($message) {
-            //$message->to('rahul8218@gmail.com', 'E-Mobile Site')->subject('You order details..');
-            //$message->from('01rahulnathe@gmail.com','Rahul Nathe');
-        //});
+        $data = array('name'=>"Rahul Nathe");
+
+        Mail::send(['text'=>'mail'], $data, function($message) {
+            $message->to('rahul8218@gmail.com', 'E-Mobile Site')->subject('You order details..');
+            $message->from('01rahulnathe@gmail.com','Rahul Nathe');
+        });
 
         echo "Email Sent. Check your inbox.";
 
